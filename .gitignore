@@ -1,0 +1,22 @@
+node_modules/
+
+# 大樓專用瀏覽器的設定檔（含登入狀態）
+.browser-profile/
+
+# 對外分享金鑰
+.share-token
+
+# 登入方式與 API 金鑰（只存在本機）
+.tower-local.json
+
+# 備份與執行期資料
+backups/
+.tower/
+.tower-codex/
+workspaces/
+
+# 範例專案上傳的素材
+examples/demo-project/assets/uploads/
+
+# Codex 版：API 金鑰模式用的 Codex 資料夾（含登入資料）
+.tower-codex-api/

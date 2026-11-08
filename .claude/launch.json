@@ -1,0 +1,17 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "tower-codex-mock",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["server.mjs", "--mock"],
+      "port": 7778
+    },
+    {
+      "name": "tower-codex",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["server.mjs"],
+      "port": 7778
+    }
+  ]
+}

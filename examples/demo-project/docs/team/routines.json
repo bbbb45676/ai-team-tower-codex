@@ -1,0 +1,24 @@
+{
+  "timezone": "Asia/Taipei",
+  "routines": [
+    {
+      "id": "qa-daily-check",
+      "dept": "test",
+      "title": "每日網站檢查",
+      "time": "09:30",
+      "days": [1, 2, 3, 4, 5],
+      "tier": "light",
+      "prompt": "檢查 index.html 與 style.css：連結、圖片替代文字、手機版面。結果寫進 docs/qa/{date}.md，有問題就在 03 開發部手冊的收件匣加一列。",
+      "enabled": false
+    },
+    {
+      "id": "chief-monthly-review",
+      "dept": "chief",
+      "title": "月回顧",
+      "time": "17:00",
+      "monthDay": "1",
+      "prompt": "照 00 總管手冊寫上個月的月回顧，存到 docs/reviews/，需要擁有者決定的事寫進 approvals.md。",
+      "enabled": false
+    }
+  ]
+}

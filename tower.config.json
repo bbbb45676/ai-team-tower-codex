@@ -1,0 +1,35 @@
+{
+  "port": 7778,
+  "engine": "codex",
+  "auth": "subscription",
+  "model": null,
+  "maxTurnsPlan": 25,
+  "maxTurnsRun": 80,
+  "maxBudgetUsdPerRun": 2,
+  "dailyBudgetUsd": 10,
+  "buildings": [
+    {
+      "id": "demo",
+      "name": "小島麵包坊",
+      "projectDir": "examples/demo-project",
+      "plan": "docs/company-plan.md",
+      "pm": {
+        "name": "總管",
+        "agentFile": ".claude/agents/chief.md",
+        "handbook": "docs/team/00-chief.md"
+      },
+      "departments": [
+        { "id": "research", "name": "研究部", "line": "製作線", "members": 2, "style": "research", "icon": "book", "wall": "#cbe7ea", "ink": "#2f7f86", "agentFile": ".claude/agents/research.md", "handbook": "docs/team/01-research.md" },
+        { "id": "design", "name": "設計部", "line": "製作線", "members": 2, "style": "design", "icon": "pen", "wall": "#f6d2bd", "ink": "#b8643a", "agentFile": ".claude/agents/design.md", "handbook": "docs/team/02-design.md" },
+        { "id": "dev", "name": "開發部", "line": "製作線", "members": 3, "style": "dev", "icon": "code", "wall": "#bfe3cf", "ink": "#2f8a5f", "agentFile": ".claude/agents/dev.md", "handbook": "docs/team/03-dev.md" },
+        { "id": "test", "name": "品管部", "line": "製作線", "members": 2, "style": "test", "icon": "check", "wall": "#f3dc9a", "ink": "#a07818", "agentFile": ".claude/agents/test.md", "handbook": "docs/team/04-qa.md" }
+      ],
+      "approvals": "approvals.md",
+      "uploadDir": "assets/uploads",
+      "gates": {
+        "qa-daily-check": { "changed": ["index.html", "style.css"] }
+      },
+      "autoCommit": false
+    }
+  ]
+}

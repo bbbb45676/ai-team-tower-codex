@@ -142,6 +142,19 @@ if (ENGINE === 'mock') query = mockQuery;
 else if (CODEX_PATH) query = args => codexQuery(args, CODEX_PATH);
 else engineError = '找不到 Codex。請安裝 Codex 桌面版，或執行 npm install -g @openai/codex，也可以在環境變數 CODEX_PATH 指定 codex 執行檔。';
 
+// 開一個看得到的視窗跑指令：Windows 用命令提示字元、Mac 用「終端機」，其他系統在背景跑
+function runInWindow(title, cmd, cwd) {
+  if (process.platform === 'win32') return spawn(`start "${title}" cmd /k ${cmd}`, { cwd, shell: true, detached: true, stdio: 'ignore', windowsHide: false }).unref();
+  if (process.platform === 'darwin') {
+    const sh = `cd '${cwd.replace(/'/g, `'\\''`)}' && ${cmd}`;
+    const as = sh.replace(/\\/g, '\\\\').replace(/"/g, '\\"');
+    return spawn('osascript', ['-e', `tell application "Terminal" to do script "${as}"`, '-e', 'tell application "Terminal" to activate'], { detached: true, stdio: 'ignore' }).unref();
+  }
+  spawn(cmd, { cwd, shell: true, detached: true, stdio: 'ignore' }).unref();
+}
+// 用系統的檔案管理員打開（Windows 檔案總管、Mac Finder）
+const openInFiles = f => spawn(process.platform === 'win32' ? 'explorer.exe' : process.platform === 'darwin' ? 'open' : 'xdg-open', [f], { detached: true, stdio: 'ignore' }).unref();
+
 /* ---------- 部門設定 ---------- */
 const DEPTS = {
   research: { name: '研究部', role: '研究員', brief: '調查需求背景、現有程式碼與外部資料，整理結論與建議，必要時把研究筆記寫到 docs/research/。' },
@@ -1558,7 +1571,7 @@ const server = http.createServer(async (req, res) => {
           const rel = String(bd.path || '').trim(), f = path.resolve(b.dir, rel || '.');
           if (!inside(f) && f !== b.dir) return send(res, 400, { error: '只能打開專案資料夾裡的東西' });
           if (!fs.existsSync(f)) return send(res, 404, { error: '找不到 ' + rel });
-          spawn('explorer.exe', [f], { detached: true, stdio: 'ignore' }).unref();
+          openInFiles(f);
           return send(res, 200, { ok: true });
         }
         if (om[2] === 'workshop') {
@@ -1568,7 +1581,7 @@ const server = http.createServer(async (req, res) => {
             const svcs = w.services || (w.start ? [{ check: w.check || w.url, cmd: w.start }] : []);
             if (!svcs.length) return send(res, 409, { error: w.offHint || `${w.name}沒有開著` });
             // 只啟動沒開的服務，各開一個看得到的視窗（不會重開你已經開著的）
-            for (const sv of svcs) { let on = false; try { on = (await fetch(sv.check, { signal: AbortSignal.timeout(1500) })).status < 500; } catch {} if (!on) spawn(`start "${sv.title || w.name}" cmd /k ${sv.cmd}`, { cwd: path.resolve(b.dir, w.cwd || '.'), shell: true, detached: true, stdio: 'ignore', windowsHide: false }).unref(); }
+            for (const sv of svcs) { let on = false; try { on = (await fetch(sv.check, { signal: AbortSignal.timeout(1500) })).status < 500; } catch {} if (!on) runInWindow(sv.title || w.name, sv.cmd, path.resolve(b.dir, w.cwd || '.')); }
             let ok = false; for (let i = 0; i < 90 && !ok; i++) { await new Promise(r => setTimeout(r, 500)); ok = await up(); }
             if (!ok) return send(res, 504, { error: `${w.name}啟動中，還沒好；過幾秒再按一次` });
           }

@@ -42,6 +42,17 @@ npm start
 
 第一次正式啟動時，畫面會跳出登入方式的指引，照著做就好（見下一節）。
 
+## Mac
+
+Windows 和 Mac 都能用。在 Mac 上：
+
+1. 安裝 Node.js 18.17 以上（[nodejs.org](https://nodejs.org/)，或 `brew install node`）。
+2. 安裝 Codex：Codex 桌面版，或 `npm install -g @openai/codex`（Homebrew 也可以 `brew install codex`）。
+3. 在「終端機」進到大樓資料夾，執行 `npm install`，再 `npm start`（想先試玩就 `npm run mock`）。也可以在 Finder 直接雙擊 `start-mac.command`，它會自動安裝並打開大樓；第一次雙擊如果被系統擋下，對它按右鍵 →「打開」。
+
+- 大樓專用瀏覽器會找「應用程式」裡的 Brave 或 Google Chrome；裝在別的地方可以在 `tower.config.json` 的 `towerBrowser.exe` 指定。
+- Mac 支援是新加的，遇到問題歡迎開 issue。
+
 ## 登入方式
 
 大樓在背景驅動你電腦上的 Codex，有兩種登入方式可以選。第一次啟動會有指引一步一步帶你設定，之後隨時可以在工具列的「登入」按鈕切換：
